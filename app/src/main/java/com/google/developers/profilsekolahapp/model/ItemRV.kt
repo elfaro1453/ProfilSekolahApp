@@ -10,7 +10,7 @@ data class ItemRV(
     var urlGambar: String = "",
     @Json(name = "title")
     var title: String = "",
-    @Json(name = "deskripsi")
-    var deskripsi: String = "",
+    @Json(name = "description")
+    var description: String = "",
     var type: String = ""
 )

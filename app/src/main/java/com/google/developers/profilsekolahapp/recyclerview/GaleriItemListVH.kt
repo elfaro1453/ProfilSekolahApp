@@ -13,7 +13,7 @@ class GaleriItemListVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: ItemRV) {
         itemView.run {
             txt_title.text = item.title
-            txt_description.text = item.deskripsi
+            txt_description.text = item.description
             Glide.with(this).load(item.urlGambar).into(img_item)
         }
     }

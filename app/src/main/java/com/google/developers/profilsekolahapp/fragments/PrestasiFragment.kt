@@ -26,11 +26,9 @@ class PrestasiFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_prestasi, container, false)
         adapterRv = PrestasiItemListAdapter()
-        view.rv_prestasi.run {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(view.context)
-            adapter = adapterRv
-        }
+        view.rv_prestasi.setHasFixedSize(true)
+        view.rv_prestasi.layoutManager = LinearLayoutManager(view.context)
+        view.rv_prestasi.adapter = adapterRv
         return view
     }
 

@@ -29,11 +29,9 @@ class EkskulFragment : Fragment() {
         // definisikan dulu adapternya
         adapterRv = GaleriItemListAdapter()
         // modifikasi bagian recylerview yang ada di fragment_ekskul
-        view.rv_ekskul.run {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(view.context)
-            adapter = adapterRv
-        }
+        view.rv_ekskul.setHasFixedSize(true)
+        view.rv_ekskul.layoutManager = LinearLayoutManager(view.context)
+        view.rv_ekskul.adapter = adapterRv
         return view
     }
 

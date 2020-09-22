@@ -1,11 +1,13 @@
 package com.google.developers.profilsekolahapp.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.developers.profilsekolahapp.R
+import kotlinx.android.synthetic.main.fragment_prestasi.view.*
 
 class PrestasiFragment : Fragment() {
 
@@ -14,7 +16,11 @@ class PrestasiFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_prestasi, container, false)
+        val view = inflater.inflate(R.layout.fragment_prestasi, container, false)
+        view.rv_prestasi.run {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(view.context)
+        }
+        return view
     }
 }

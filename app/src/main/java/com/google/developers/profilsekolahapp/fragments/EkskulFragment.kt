@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.developers.profilsekolahapp.LoadingDialogFragment
 import com.google.developers.profilsekolahapp.R
 import com.google.developers.profilsekolahapp.model.ItemRV
 import com.google.developers.profilsekolahapp.recyclerview.GaleriItemListAdapter
@@ -19,6 +20,7 @@ class EkskulFragment : Fragment() {
 
     // adapter recylerview perlu jadi global variabel sehingga bisa diakses oleh semua fungsi di dalam class
     private lateinit var adapterRv: GaleriItemListAdapter
+    private lateinit var loadingDialog: LoadingDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +28,8 @@ class EkskulFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_ekskul, container, false)
+        // inisialisasi loadingDialog menggunakan context dari view dan container
+        loadingDialog = LoadingDialogFragment(view.context, container!!)
         // definisikan dulu adapternya
         adapterRv = GaleriItemListAdapter()
         // modifikasi bagian recylerview yang ada di fragment_ekskul
@@ -37,6 +41,7 @@ class EkskulFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingDialog.startLoadingDialog()
         // buat variabel untuk membuat retrofitService
         val retrofitService = RetrofitService.buildService(RetrofitInterfaces::class.java)
         // pada fragment kita gunakan viewLifecyclerOwner untuk menjalankan fungsi suspend / asynchronous
@@ -47,6 +52,7 @@ class EkskulFragment : Fragment() {
                 val dataEkskul = request.body() as List<ItemRV>
                 adapterRv.addData(dataEkskul)
                 adapterRv.notifyDataSetChanged()
+                loadingDialog.dismissDialog()
             }
         }
     }

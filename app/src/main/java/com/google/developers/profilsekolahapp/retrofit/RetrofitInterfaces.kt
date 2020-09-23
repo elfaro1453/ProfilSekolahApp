@@ -3,6 +3,7 @@ package com.google.developers.profilsekolahapp.retrofit
 import com.google.developers.profilsekolahapp.model.Founder
 import com.google.developers.profilsekolahapp.model.ItemRV
 import com.google.developers.profilsekolahapp.model.Prestasi
+import com.google.developers.profilsekolahapp.model.Sekolah
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -27,4 +28,7 @@ interface RetrofitInterfaces {
 
     @GET("data/kepsek.json")
     suspend fun getDataFounder(): Response<Founder>
+
+    @GET("data/sekolah.json")
+    suspend fun getDataSekolah(): Response<Sekolah>
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.developers.profilsekolahapp.LoadingDialogFragment
 import com.google.developers.profilsekolahapp.R
 import com.google.developers.profilsekolahapp.model.ItemRV
 import com.google.developers.profilsekolahapp.recyclerview.GaleriItemListAdapter
@@ -18,6 +19,8 @@ import kotlinx.coroutines.launch
 class GaleriFragment : Fragment() {
 
     private lateinit var adapter: GaleriItemListAdapter
+
+    private lateinit var loadingDialog: LoadingDialogFragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,6 +28,7 @@ class GaleriFragment : Fragment() {
     ): View? {
         // inflate view yang akan digunakan, dalam hal ini fragment_galeri
         val view = inflater.inflate(R.layout.fragment_galeri, container, false)
+        loadingDialog = LoadingDialogFragment(view.context, container!!)
         // buat adapter untuk recyclerview
         adapter = GaleriItemListAdapter()
         // atur recyclerview rv_galeri
@@ -37,6 +41,7 @@ class GaleriFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingDialog.startLoadingDialog()
         // buat variabel untuk membuat retrofitService
         val retrofitService = RetrofitService.buildService(RetrofitInterfaces::class.java)
         // pada fragment kita gunakan viewLifecyclerOwner untuk menjalankan fungsi suspend / asynchronous
@@ -47,6 +52,7 @@ class GaleriFragment : Fragment() {
                 val dataGaleri = request.body() as List<ItemRV>
                 adapter.addData(dataGaleri)
                 adapter.notifyDataSetChanged()
+                loadingDialog.dismissDialog()
             }
         }
     }

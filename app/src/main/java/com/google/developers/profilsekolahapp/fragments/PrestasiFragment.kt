@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.developers.profilsekolahapp.LoadingDialogFragment
 import com.google.developers.profilsekolahapp.R
 import com.google.developers.profilsekolahapp.model.Prestasi
 import com.google.developers.profilsekolahapp.recyclerview.PrestasiItemListAdapter
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class PrestasiFragment : Fragment() {
 
     private lateinit var adapterRv: PrestasiItemListAdapter
+    private lateinit var loadingDialog: LoadingDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +27,7 @@ class PrestasiFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_prestasi, container, false)
+        loadingDialog = LoadingDialogFragment(view.context, container!!)
         adapterRv = PrestasiItemListAdapter()
         view.rv_prestasi.setHasFixedSize(true)
         view.rv_prestasi.layoutManager = LinearLayoutManager(view.context)
@@ -34,6 +37,7 @@ class PrestasiFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingDialog.startLoadingDialog()
         // buat variabel untuk membuat retrofitService
         val retrofitService = RetrofitService.buildService(RetrofitInterfaces::class.java)
         // pada fragment kita gunakan viewLifecyclerOwner untuk menjalankan fungsi suspend / asynchronous
@@ -44,6 +48,7 @@ class PrestasiFragment : Fragment() {
                 val dataPrestasi = request.body() as List<Prestasi>
                 adapterRv.addData(dataPrestasi)
                 adapterRv.notifyDataSetChanged()
+                loadingDialog.dismissDialog()
             }
         }
     }

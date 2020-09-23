@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.developers.profilsekolahapp.LoadingDialogFragment
 import com.google.developers.profilsekolahapp.R
 import com.google.developers.profilsekolahapp.model.Founder
 import com.google.developers.profilsekolahapp.retrofit.RetrofitInterfaces
@@ -18,17 +19,21 @@ import kotlinx.coroutines.launch
 
 class FounderFragment : Fragment() {
 
+    private lateinit var loadingDialog: LoadingDialogFragment
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_founder, container, false)
+        loadingDialog = LoadingDialogFragment(view.context, container!!)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingDialog.startLoadingDialog()
         val retrofitService = RetrofitService.buildService(RetrofitInterfaces::class.java)
         // pada fragment kita gunakan viewLifecyclerOwner untuk menjalankan fungsi suspend / asynchronous
         viewLifecycleOwner.lifecycleScope.launch {
@@ -49,6 +54,8 @@ class FounderFragment : Fragment() {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(dataFounder.facebook))
                     startActivity(intent)
                 }
+
+                loadingDialog.dismissDialog()
             }
         }
     }

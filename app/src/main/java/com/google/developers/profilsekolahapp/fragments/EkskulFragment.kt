@@ -17,6 +17,7 @@ import com.google.developers.profilsekolahapp.retrofit.RetrofitInterfaces
 import com.google.developers.profilsekolahapp.retrofit.RetrofitService
 import com.google.developers.profilsekolahapp.room.RoomDB
 import kotlinx.android.synthetic.main.fragment_ekskul.view.*
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class EkskulFragment : Fragment() {
@@ -62,7 +63,14 @@ class EkskulFragment : Fragment() {
                 // buat variabel untuk membuat retrofitService
                 val retrofitService = RetrofitService.buildService(RetrofitInterfaces::class.java)
                 // pada fragment kita gunakan viewLifecyclerOwner untuk menjalankan fungsi suspend / asynchronous
-                viewLifecycleOwner.lifecycleScope.launch {
+                val handlerThread = CoroutineExceptionHandler { _, exception ->
+                    Toast.makeText(
+                        context,
+                        "Tidak bisa menghubungi Server..\nSilahkan Periksa koneksi Internet",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                viewLifecycleOwner.lifecycleScope.launch(handlerThread) {
                     // jalankan fungsi getDataGaleri yang berjalan secara asynchronous / di background
                     val request = retrofitService.getDataEkskul()
                     if (request.isSuccessful) { // jika request sukses

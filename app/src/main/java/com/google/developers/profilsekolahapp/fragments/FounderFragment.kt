@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -15,6 +16,7 @@ import com.google.developers.profilsekolahapp.model.Founder
 import com.google.developers.profilsekolahapp.retrofit.RetrofitInterfaces
 import com.google.developers.profilsekolahapp.retrofit.RetrofitService
 import kotlinx.android.synthetic.main.founder_content.*
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class FounderFragment : Fragment() {
@@ -34,9 +36,16 @@ class FounderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadingDialog.startLoadingDialog()
-        val retrofitService = RetrofitService.buildService(RetrofitInterfaces::class.java)
+        val handlerThread = CoroutineExceptionHandler { _, error ->
+            Toast.makeText(
+                context,
+                "Tidak bisa menghubungi Server..\nSilahkan Periksa koneksi Internet",
+                Toast.LENGTH_LONG
+            ).show()
+        }
         // pada fragment kita gunakan viewLifecyclerOwner untuk menjalankan fungsi suspend / asynchronous
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(handlerThread) {
+            val retrofitService = RetrofitService.buildService(RetrofitInterfaces::class.java)
             // jalankan fungsi getDataGaleri yang berjalan secara asynchronous / di background
             val request = retrofitService.getDataFounder()
             if (request.isSuccessful) { // jika request sukses

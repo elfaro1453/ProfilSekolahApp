@@ -1,6 +1,7 @@
 package com.google.developers.profilsekolahapp.room
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.google.developers.profilsekolahapp.model.ItemRV
@@ -8,6 +9,7 @@ import com.google.developers.profilsekolahapp.model.ItemRV
 /**
  * Created by Imam Fahrur Rofi on 24/09/2020.
  */
+@Dao
 interface RoomDAO {
 
     @Query("SELECT * FROM item WHERE type = :type")
@@ -17,13 +19,13 @@ interface RoomDAO {
 //    fun getData(id: Long): LiveData<ItemRV>
 
     @Query("DELETE FROM item")
-    fun resetDatabase()
+    suspend fun resetDatabase()
 
     @Query("DELETE FROM item WHERE type = :type")
-    fun resetType(type: String)
+    suspend fun resetType(type: String)
 
     @Insert
-    fun insertData(vararg data: ItemRV)
+    suspend fun insertData(data: List<ItemRV>)
 
 //    @Delete
 //    fun delete(data: ItemRV)

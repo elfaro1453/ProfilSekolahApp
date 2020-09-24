@@ -25,10 +25,9 @@ abstract class RoomDB : RoomDatabase() {
          */
         fun getInstance(context: Context): RoomDB {
             return instance ?: synchronized(this) {
-                instance ?: Room.databaseBuilder(context, RoomDB::class.java, "letter.db")
+                instance ?: Room.databaseBuilder(context, RoomDB::class.java, "item.db")
                     .build()
             }
         }
-
     }
 }

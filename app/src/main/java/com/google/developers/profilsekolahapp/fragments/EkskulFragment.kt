@@ -52,10 +52,10 @@ class EkskulFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         loadingDialog.startLoadingDialog()
         val dataItem = roomDB.roomDao().getDataByType("ekskul")
-        dataItem.observe(viewLifecycleOwner, {
-            Log.e("banyak data", it.size.toString())
-            if (it.isNotEmpty()) {
-                adapterRv.addData(it)
+        dataItem.observe(viewLifecycleOwner, { data ->
+            Log.e("banyak data", data.size.toString())
+            if (data.isNotEmpty()) {
+                adapterRv.addData(data)
                 adapterRv.notifyDataSetChanged()
                 loadingDialog.dismissDialog()
             } else {

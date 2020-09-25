@@ -1,8 +1,6 @@
 package com.google.developers.profilsekolahapp.model
 
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.squareup.moshi.Json
 
 /**
@@ -15,7 +13,7 @@ import com.squareup.moshi.Json
 @Entity(tableName = "item")
 data class ItemRV(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    var id: Int = 0,
     @Json(name = "urlGambar")
     var urlGambar: String = "",
     @Json(name = "title")
@@ -28,10 +26,19 @@ data class ItemRV(
 @Entity(tableName = "prestasi")
 data class Prestasi(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    var id: Int = 0,
     @Json(name = "title")
     var title: String = "",
     @Json(name = "data")
     @Ignore
     var data: List<ItemRV> = arrayListOf()
+)
+
+data class PrestasiItem(
+    @Embedded val prestasi: Prestasi,
+    @Relation(
+        parentColumn = "title",
+        entityColumn = "type"
+    )
+    val data: List<ItemRV>
 )

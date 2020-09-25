@@ -1,6 +1,7 @@
 package com.google.developers.profilsekolahapp.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
@@ -24,9 +25,13 @@ data class ItemRV(
     var type: String = ""
 )
 
+@Entity(tableName = "prestasi")
 data class Prestasi(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     @Json(name = "title")
     var title: String = "",
     @Json(name = "data")
+    @Ignore
     var data: List<ItemRV> = arrayListOf()
 )

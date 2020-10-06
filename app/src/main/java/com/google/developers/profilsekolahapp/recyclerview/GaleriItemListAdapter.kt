@@ -9,7 +9,8 @@ import com.google.developers.profilsekolahapp.model.ItemRV
 /**
  * Created by Imam Fahrur Rofi on 17/09/2020.
  */
-class GaleriItemListAdapter : RecyclerView.Adapter<GaleriItemListVH>() {
+class GaleriItemListAdapter(private val clickListener: (ItemRV) -> Unit) :
+    RecyclerView.Adapter<GaleriItemListVH>() {
     private var listItem = arrayListOf<ItemRV>()
 
     fun addData(items: List<ItemRV>) {
@@ -25,7 +26,7 @@ class GaleriItemListAdapter : RecyclerView.Adapter<GaleriItemListVH>() {
 
     override fun onBindViewHolder(holder: GaleriItemListVH, position: Int) {
         val data = listItem[position]
-        holder.bind(data)
+        holder.bind(data, clickListener)
     }
 
     override fun getItemCount(): Int = listItem.size

@@ -1,10 +1,7 @@
 package com.google.developers.profilsekolahapp.room
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.google.developers.profilsekolahapp.model.Founder
 import com.google.developers.profilsekolahapp.model.ItemRV
 import com.google.developers.profilsekolahapp.model.Prestasi
@@ -27,6 +24,9 @@ interface RoomDAO {
 
     @Insert
     suspend fun insertData(data: List<ItemRV>)
+
+    @Delete
+    suspend fun removeData(data: ItemRV)
 
     @Transaction
     @Query("SELECT * FROM prestasi")

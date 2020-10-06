@@ -14,6 +14,7 @@ import com.google.developers.profilsekolahapp.model.ItemRV
 import com.google.developers.profilsekolahapp.recyclerview.GaleriItemListAdapter
 import com.google.developers.profilsekolahapp.retrofit.RetrofitInterfaces
 import com.google.developers.profilsekolahapp.retrofit.RetrofitService
+import com.google.developers.profilsekolahapp.room.RoomDB
 import kotlinx.android.synthetic.main.fragment_galeri.view.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -21,8 +22,9 @@ import kotlinx.coroutines.launch
 class GaleriFragment : Fragment() {
 
     private lateinit var adapter: GaleriItemListAdapter
-
     private lateinit var loadingDialog: LoadingDialogFragment
+    private lateinit var roomDB: RoomDB
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,8 +33,13 @@ class GaleriFragment : Fragment() {
         // inflate view yang akan digunakan, dalam hal ini fragment_galeri
         val view = inflater.inflate(R.layout.fragment_galeri, container, false)
         loadingDialog = LoadingDialogFragment(view.context, container!!)
+        roomDB = RoomDB.getInstance(view.context)
         // buat adapter untuk recyclerview
-        adapter = GaleriItemListAdapter()
+        adapter = GaleriItemListAdapter({
+            viewLifecycleOwner.lifecycleScope.launch {
+                roomDB.roomDao().removeData(it)
+            }
+        })
         // atur recyclerview rv_galeri
         view.rv_galeri.adapter = adapter
         view.rv_galeri.setHasFixedSize(true)
